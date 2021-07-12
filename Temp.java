@@ -1,40 +1,88 @@
 package Model;
 
-public class Comment extends Interaction{
+import java.sql.*;
+import java.util.Scanner;
 
-    private int commentId;
-    private String commentData;
-    private int commentType;
+//mysql-connector-java-8.0.23.jar
 
 
-    public Comment(Post post, User user) {
-        super(post,user);
-        this.commentId=commentId;
+public class Post {
+
+
+    private int postId;
+    private String postTitle;
+    private Timestamp postTimestamp;
+    private String content;
+    //contentId
+    private int postDataType;
+    private User user;
+
+   
+    public Post(User user){
+        this.user=user;
 
     }
 
-    public int getCommentId() {
-        return commentId;
+    public int getPostId1() {
+        return postId;
     }
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public String getCommentData() {
-        return commentData;
+
+
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    public void setCommentData(String commentData) {
-        this.commentData = commentData;
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
     }
 
-    public int getCommentType() {
-        return commentType;
+    public Timestamp getPostTimestamp() {
+        return postTimestamp;
     }
 
-    public void setCommentType(int commentType) {
-        this.commentType = commentType;
+    public void setPostTimestamp(Timestamp postTimestamp) {
+        this.postTimestamp = postTimestamp;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getPostDataType() {
+        return postDataType;
+    }
+
+    public void setPostDataType(int postDataType) {
+        this.postDataType = postDataType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "postId=" + postId +
+                ", postTitle='" + postTitle + '\'' +
+                ", postTimestamp=" + postTimestamp +
+                ", content='" + content + '\'' +
+                ", postDataType=" + postDataType +
+                ", user=" + user +
+                '}';
     }
 
 }
