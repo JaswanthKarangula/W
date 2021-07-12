@@ -1,88 +1,81 @@
-package Model;
+package Servlets;
 
-import java.sql.*;
-import java.util.Scanner;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-//mysql-connector-java-8.0.23.jar
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import Manager.Manager;
+import Model.User;
 
 
-public class Post {
+
+public class LoginServlet extends HttpServlet {
+
+    
 
 
-    private int postId;
-    private String postTitle;
-    private Timestamp postTimestamp;
-    private String content;
-    //contentId
-    private int postDataType;
-    private User user;
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            request.setCharacterEncoding("UTF-8");
+            String emailOrPhone = request.getParameter("userEmail");
+            String password = request.getParameter("userPassword");
+            HttpSession session = request.getSession();
+            Manager manager=new Manager();
+            User user = manager.getUser(emailOrPhone, password);
+            
+            if (user != null) {
+                session.setAttribute("user", user);
+                if (session.getAttribute("currentUrl") == null) {
+                    response.sendRedirect("home.jsp");
+                } else {
+                    String curUrl = session.getAttribute("currentUrl").toString();
+                    System.out.println(curUrl);
+                    session.setAttribute("currentUrl", null);
+                    response.sendRedirect(curUrl);
+                }
+                
+                
+            } 
+            else {
+            	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.html");
+    			PrintWriter out= response.getWriter();
+    			
+    			rd.include(request, response);
+    			out.println("<font color=red>Either user name or password is wrong.</font>");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            
+        }
+    }
+
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
    
-    public Post(User user){
-        this.user=user;
-
-    }
-
-    public int getPostId1() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
-    }
-
-
-
-    public String getPostTitle() {
-        return postTitle;
-    }
-
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
-    }
-
-    public Timestamp getPostTimestamp() {
-        return postTimestamp;
-    }
-
-    public void setPostTimestamp(Timestamp postTimestamp) {
-        this.postTimestamp = postTimestamp;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getPostDataType() {
-        return postDataType;
-    }
-
-    public void setPostDataType(int postDataType) {
-        this.postDataType = postDataType;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Override
-    public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", postTitle='" + postTitle + '\'' +
-                ", postTimestamp=" + postTimestamp +
-                ", content='" + content + '\'' +
-                ", postDataType=" + postDataType +
-                ", user=" + user +
-                '}';
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
+
+   
+
 
 }
