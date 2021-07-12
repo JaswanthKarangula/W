@@ -1,8 +1,4 @@
-<%-- 
-    Document   : login.jsp
-    Created on : Jan 21, 2019, 3:28:39 PM
-    Author     : learnbyproject.net
---%>
+
 <%@page import="java.util.Objects"%>
 <%@page import="net.learnbyproject.helper.Keys"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
